@@ -10,6 +10,7 @@ import UIKit
 
 class CarListViewController: UIViewController {
 
+    //MARK: - Vars
     let coreDataManager = CoreDataManager.instance
     var carList = [Car]()
     
@@ -17,8 +18,13 @@ class CarListViewController: UIViewController {
     //MARK: - IBOutlets
     @IBOutlet weak var carTableView: UITableView!
     
+    //add new car
+    @IBAction func addPressed(_ sender: UIBarButtonItem) {
+    
+    }
     
     
+    //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
@@ -62,17 +68,17 @@ extension CarListViewController: UITableViewDelegate, UITableViewDataSource {
     //swipe left to delete car
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            //delete car
-            let alert = UIAlertController(title: "Внимание", message: "Вы точно хотите удалить автомобиль?", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Внимание", message: "Удалить \(carList[indexPath.row].name ?? "")?", preferredStyle: .alert)
             
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
             
             let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { (action) in
                 let car = self.carList[indexPath.row]
                 if let carName = car.name {
+                    //delete selected car
                     let predicate = NSPredicate(format: "name MATCHES %@", carName)
                     self.coreDataManager.clearEntity(in: "Car", predicate: predicate)
-                    self.carList.removeAll(where: {$0 == car})
+                    self.carList.remove(at: indexPath.row)
                     self.carTableView.deleteRows(at: [indexPath], with: .automatic)
                 }
             }

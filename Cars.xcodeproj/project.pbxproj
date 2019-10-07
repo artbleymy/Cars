@@ -14,6 +14,8 @@
 		85591060234B71C200FDF916 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8559105E234B71C200FDF916 /* LaunchScreen.storyboard */; };
 		8559106C234B76D200FDF916 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8559106A234B76D200FDF916 /* DataModel.xcdatamodeld */; };
 		8559106E234B773200FDF916 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8559106D234B773200FDF916 /* CoreDataManager.swift */; };
+		85988C5F234B97E4004D76CB /* PropertyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85988C5E234B97E4004D76CB /* PropertyCell.swift */; };
+		85E08273234B9AE9002DCED1 /* PropertyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E08272234B9AE9002DCED1 /* PropertyViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		85591061234B71C200FDF916 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8559106B234B76D200FDF916 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		8559106D234B773200FDF916 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		85988C5E234B97E4004D76CB /* PropertyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyCell.swift; sourceTree = "<group>"; };
+		85E08272234B9AE9002DCED1 /* PropertyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,8 @@
 			isa = PBXGroup;
 			children = (
 				85591057234B71C100FDF916 /* CarListViewController.swift */,
+				85988C5E234B97E4004D76CB /* PropertyCell.swift */,
+				85E08272234B9AE9002DCED1 /* PropertyViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -165,6 +171,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85988C5F234B97E4004D76CB /* PropertyCell.swift in Sources */,
+				85E08273234B9AE9002DCED1 /* PropertyViewController.swift in Sources */,
 				8559106C234B76D200FDF916 /* DataModel.xcdatamodeld in Sources */,
 				85591058234B71C100FDF916 /* CarListViewController.swift in Sources */,
 				8559106E234B773200FDF916 /* CoreDataManager.swift in Sources */,

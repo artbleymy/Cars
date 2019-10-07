@@ -76,6 +76,8 @@ class CoreDataManager {
         return carArray
     }
     
+    
+    
     //Fill default values
     private func initDefaultValues() {
         clearEntity(in: "Car")
