@@ -30,7 +30,7 @@ class CoreDataManager {
 //MARK: - Data manipulation methods
     
     //Save context for Core Data
-    private func saveContext() {
+    func saveContext() {
         do {
             try context.save()
         } catch {
@@ -96,6 +96,14 @@ class CoreDataManager {
             print("Error while cleaning entity \(entity)")
         }
     }
+    
+    //Create new car with new name
+    func createNewCar(with name: String) -> Car {
+        let car = Car(context: context)
+        car.name = name
+        return car
+    }
+    
     //MARK: - Append methods
     //Add car with name to source array
     private func appendToCarList(source array: [Car], name: String) -> [Car]{

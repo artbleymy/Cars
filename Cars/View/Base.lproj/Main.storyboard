@@ -120,7 +120,11 @@
                         <viewLayoutGuide key="safeArea" id="VNS-cS-QBu"/>
                     </view>
                     <navigationItem key="navigationItem" id="LPx-m9-E6S">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="eBG-JO-30L"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="eBG-JO-30L">
+                            <connections>
+                                <action selector="savePressed:" destination="9j0-6F-ai0" id="chm-Vu-9uz"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="propertyTableView" destination="INZ-Fr-qsH" id="GdP-yg-ioj"/>

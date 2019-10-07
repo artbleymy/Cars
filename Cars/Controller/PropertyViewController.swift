@@ -24,9 +24,39 @@ class PropertyViewController: UIViewController {
     }
     var propertiesList = [Property]()
     var valuesList = [Value]()
+    //Generate name for new car
+    var newCarName: String {
+        get {
+            var template = ""
+            for index in 0..<propertiesList.count {
+                guard let cell = propertyTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? PropertyCell else { return ""}
+                if let value = cell.propertyValueField.text {
+                    switch propertiesList[index].name {
+                    case "Make":
+                        template += value
+                    case "Model":
+                        template += value.isEmpty ? "" : (" " + value)
+                    case "Year":
+                        template += value.isEmpty ? "" : (" " + value + " г.в.")
+                    default:
+                        template += ""
+                    }
+                    
+                }
+            }
+            return template
+        }
+    }
     
     //IBOutlets
     @IBOutlet weak var propertyTableView: UITableView!
+    
+    //IBActions
+    @IBAction func savePressed(_ sender: UIBarButtonItem) {
+        
+        saveCurrentProperties()
+    }
+    
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -61,6 +91,37 @@ class PropertyViewController: UIViewController {
             valuesList = valuesArray
         }
         
+    }
+    //Save properies for current car, if new car - create car before saving
+    private func saveCurrentProperties() {
+        var valuesListForSave = [Value]()
+        var car: Car
+        if let existingCar = selectedCar {
+            car = existingCar
+            //if existing car, clear values
+            if let carName = car.name {
+                car.name = newCarName
+                let predicate = NSPredicate(format: "parentCar.name MATCHES %@", carName)
+                coreDataManager.clearEntity(in: "Value", predicate: predicate)
+            }
+        } else {
+            car = coreDataManager.createNewCar(with: newCarName)
+        }
+        //insert properties
+        for index in 0..<propertiesList.count {
+            guard let cell = propertyTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? PropertyCell else { return }
+            if let value = cell.propertyValueField.text {
+                valuesListForSave = coreDataManager.appendToValueList(source: valuesListForSave,
+                                                                      value: value,
+                                                                      parentProperty: propertiesList[index],
+                                                                      parentCar: car)
+            }
+            
+        }
+        
+        coreDataManager.saveContext()
+        self.navigationController?.popViewController(animated: true)
+        delegate?.refreshCarList()
     }
 
 }
