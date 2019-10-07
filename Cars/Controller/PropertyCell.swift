@@ -10,8 +10,8 @@ import UIKit
 
 class PropertyCell: UITableViewCell {
 
-    @IBOutlet weak var propertyLabel: UILabel!
-    @IBOutlet weak var propertyTextField: UITextField!
+    @IBOutlet weak var propertyNameLabel: UILabel!
+    @IBOutlet weak var propertyValueField: UITextField!
     
     
     override func awakeFromNib() {

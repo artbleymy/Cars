@@ -64,7 +64,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="INZ-Fr-qsH">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="72" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="INZ-Fr-qsH">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
@@ -103,8 +103,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="propertyLabel" destination="gBX-V3-FA8" id="2xR-fN-0Cd"/>
-                                            <outlet property="propertyTextField" destination="2HP-hY-lbE" id="c9t-RD-QKT"/>
+                                            <outlet property="propertyNameLabel" destination="gBX-V3-FA8" id="2xR-fN-0Cd"/>
+                                            <outlet property="propertyValueField" destination="2HP-hY-lbE" id="c9t-RD-QKT"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -122,6 +122,9 @@
                     <navigationItem key="navigationItem" id="LPx-m9-E6S">
                         <barButtonItem key="rightBarButtonItem" title="Save" id="eBG-JO-30L"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="propertyTableView" destination="INZ-Fr-qsH" id="GdP-yg-ioj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2DN-Wd-i3E" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

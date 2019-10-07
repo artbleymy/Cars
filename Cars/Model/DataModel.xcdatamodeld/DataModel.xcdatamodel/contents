@@ -2,14 +2,14 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14903" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Car" representedClassName=".Car" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="value" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Value" inverseName="parentCar" inverseEntity="Value"/>
+        <relationship name="value" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Value" inverseName="parentCar" inverseEntity="Value"/>
     </entity>
     <entity name="Property" representedClassName="Property" syncable="YES" codeGenerationType="class">
         <attribute name="descr" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="type" optional="YES" attributeType="String"/>
-        <relationship name="value" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Value" inverseName="parentProperty" inverseEntity="Value"/>
+        <relationship name="value" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Value" inverseName="parentProperty" inverseEntity="Value"/>
     </entity>
     <entity name="Value" representedClassName="Value" syncable="YES" codeGenerationType="class">
         <attribute name="value" optional="YES" attributeType="String"/>
@@ -17,8 +17,8 @@
         <relationship name="parentProperty" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="value" inverseEntity="Property"/>
     </entity>
     <elements>
-        <element name="Car" positionX="-63" positionY="-18" width="128" height="73"/>
-        <element name="Property" positionX="-63" positionY="-9" width="128" height="118"/>
-        <element name="Value" positionX="-54" positionY="27" width="128" height="88"/>
+        <element name="Car" positionX="-55.27734375" positionY="-6.2265625" width="128" height="73"/>
+        <element name="Property" positionX="380.390625" positionY="-33.5390625" width="128" height="118"/>
+        <element name="Value" positionX="176.15234375" positionY="-5.5546875" width="128" height="88"/>
     </elements>
 </model>

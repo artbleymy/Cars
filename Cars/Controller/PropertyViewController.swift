@@ -8,14 +8,86 @@
 
 import UIKit
 
+protocol PropertyEditDelegate {
+    func refreshCarList()
+}
+
 class PropertyViewController: UIViewController {
 
+    //MARK: - Vars
+    let coreDataManager = CoreDataManager.instance
+    var delegate: PropertyEditDelegate?
+    var selectedCar: Car? {
+        didSet {
+            loadValuesOfSelectedCar()
+        }
+    }
+    var propertiesList = [Property]()
+    var valuesList = [Value]()
+    
+    //IBOutlets
+    @IBOutlet weak var propertyTableView: UITableView!
+    
+    //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        propertyTableView.delegate = self
+        propertyTableView.dataSource = self
+        propertyTableView.tableFooterView = UIView()
+        propertyTableView.separatorStyle = .none
+        
+        //tap anywhere to hide keyboard
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tap)
+        //load properties from database
+        if let propertyArray = coreDataManager.loadProperties() {
+            propertiesList = propertyArray
+        }
 
     }
     
-
+    //Return current value of property for selected car
+    private func getValueForProperty(property: Property) -> String?{
+        let filteredValues = valuesList.filter{ $0.parentProperty == property }
+        return (filteredValues.count > 0) ? filteredValues[0].value : nil
+    }
     
+    //load values for selectedCar
+    private func loadValuesOfSelectedCar() {
+        guard let car = selectedCar else { return }
+        
+        if let valuesArray = coreDataManager.loadValues(for: car) {
+            valuesList = valuesArray
+        }
+        
+    }
 
+}
+//MARK: - Table View delegate and data source methods
+extension PropertyViewController: UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return propertiesList.count
+    }
+    //setting up cell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = propertyTableView.dequeueReusableCell(withIdentifier: "propertyCell", for: indexPath)
+        if let propertyCell = cell as? PropertyCell {
+            //set property name for cell
+            let property = propertiesList[indexPath.row]
+            propertyCell.propertyNameLabel.text = property.descr
+            propertyCell.propertyValueField.placeholder = property.descr
+            //different keyboards for different type of properties
+            propertyCell.propertyValueField.keyboardType = (property.type == "Int") ? .decimalPad : .default
+            //set value of property for cell
+            if let value = getValueForProperty(property: property) {
+                propertyCell.propertyValueField.text = value
+            }
+            
+        }
+        return cell
+    }
+    
+    
 }

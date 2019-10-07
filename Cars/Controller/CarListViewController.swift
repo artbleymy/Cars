@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CarListViewController: UIViewController {
+class CarListViewController: UIViewController, PropertyEditDelegate {
 
     //MARK: - Vars
     let coreDataManager = CoreDataManager.instance
@@ -20,7 +20,7 @@ class CarListViewController: UIViewController {
     
     //add new car
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
-    
+        performSegue(withIdentifier: "goToProperties", sender: self)
     }
     
     
@@ -62,6 +62,8 @@ extension CarListViewController: UITableViewDelegate, UITableViewDataSource {
     
     //action when select row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "goToProperties", sender: self)
         carTableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -89,8 +91,16 @@ extension CarListViewController: UITableViewDelegate, UITableViewDataSource {
             
         }
     }
-    
-    
+    //when we select row
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToProperties"{
+            guard let propertyViewController = segue.destination as? PropertyViewController else { return }
+            propertyViewController.delegate = self
+            if let indexPath = carTableView.indexPathForSelectedRow {
+                propertyViewController.selectedCar = carList[indexPath.row]
+            }
+        }
+    }
     
     
     
