@@ -18,7 +18,9 @@ class CoreDataManager {
     
     private init() {
         context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
-        defaults.set(0, forKey: "numberOfRuns")
+        //Uncomment to reset counter of starts 
+//        defaults.set(0, forKey: "numberOfRuns")
+        
         //When application start first time, add some default values
         let numberOfRuns = defaults.integer(forKey: "numberOfRuns")
         if numberOfRuns == 0 {
