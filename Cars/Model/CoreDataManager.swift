@@ -18,7 +18,7 @@ class CoreDataManager {
     
     private init() {
         context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
-        //Uncomment to reset counter of starts 
+        //Uncomment to reset counter of runs
 //        defaults.set(0, forKey: "numberOfRuns")
         
         //When application start first time, add some default values
@@ -70,7 +70,8 @@ class CoreDataManager {
         var valuesList: [Value]?
         let request : NSFetchRequest<Value> = Value.fetchRequest()
         if let carName = car.name {
-            let carPredicate = NSPredicate(format: "parentCar.name MATCHES %@", carName)
+//            let carPredicate = NSPredicate(format: "parentCar.name MATCHES %@", carName)
+            let carPredicate = NSPredicate(format: "parentCar == %@", car)
             request.predicate = carPredicate
             do {
                 valuesList = try context.fetch(request)
@@ -104,6 +105,19 @@ class CoreDataManager {
         let car = Car(context: context)
         car.name = name
         return car
+    }
+    // Delete car from context
+    func deleteCarFromContext(car: Car) {
+        context.delete(car)
+        saveContext()
+    }
+    
+    //Delete values of properties for current car
+    func deleteValuesFromContext(values: [Value]) {
+        for object in values {
+            context.delete(object)
+        }
+        saveContext()
     }
     
     //MARK: - Append methods
@@ -171,7 +185,7 @@ class CoreDataManager {
         var carList = [Car]()
         carList = appendToCarList(source: carList, name: "BMW X5 2005 г.в.")
         carList = appendToCarList(source: carList, name: "Volkswagen Polo 2000 г.в.")
-        carList = appendToCarList(source: carList, name: "Skoda Octavia 2010 г.в.")
+        carList = appendToCarList(source: carList, name: "Skoda Octavia")
         
         var valueList = [Value]()
         valueList = appendToValueList(source: valueList, value: "BMW",

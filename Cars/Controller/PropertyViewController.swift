@@ -96,16 +96,13 @@ class PropertyViewController: UIViewController {
     private func saveCurrentProperties() {
         var valuesListForSave = [Value]()
         var car: Car
+        let newName = newCarName
         if let existingCar = selectedCar {
             car = existingCar
-            //if existing car, clear values
-            if let carName = car.name {
-                car.name = newCarName
-                let predicate = NSPredicate(format: "parentCar.name MATCHES %@", carName)
-                coreDataManager.clearEntity(in: "Value", predicate: predicate)
-            }
+            car.name = newName
+            coreDataManager.deleteValuesFromContext(values: valuesList)
         } else {
-            car = coreDataManager.createNewCar(with: newCarName)
+            car = coreDataManager.createNewCar(with: newName)
         }
         //insert properties
         for index in 0..<propertiesList.count {

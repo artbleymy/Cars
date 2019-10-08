@@ -75,14 +75,10 @@ extension CarListViewController: UITableViewDelegate, UITableViewDataSource {
             let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
             
             let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { (action) in
-                let car = self.carList[indexPath.row]
-                if let carName = car.name {
-                    //delete selected car
-                    let predicate = NSPredicate(format: "name MATCHES %@", carName)
-                    self.coreDataManager.clearEntity(in: "Car", predicate: predicate)
-                    self.carList.remove(at: indexPath.row)
-                    self.carTableView.deleteRows(at: [indexPath], with: .automatic)
-                }
+                //delete car
+                self.coreDataManager.deleteCarFromContext(car: self.carList[indexPath.row])
+                self.carList.remove(at: indexPath.row)
+                self.carTableView.deleteRows(at: [indexPath], with: .automatic)
             }
             alert.addAction(cancelAction)
             alert.addAction(deleteAction)
@@ -91,7 +87,7 @@ extension CarListViewController: UITableViewDelegate, UITableViewDataSource {
             
         }
     }
-    //when we select row
+    //when go to properties
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToProperties"{
             guard let propertyViewController = segue.destination as? PropertyViewController else { return }
