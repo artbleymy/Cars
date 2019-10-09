@@ -18,13 +18,14 @@ class CarListViewController: UIViewController, PropertyEditDelegate {
     //MARK: - IBOutlets
     @IBOutlet weak var carTableView: UITableView!
     
+    //MARK: - IBActions
     //add new car
     @IBAction func addPressed(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "goToProperties", sender: self)
     }
     
     
-    //MARK: - viewDidLoad
+    //MARK: - List of cars support methods
     override func viewDidLoad() {
         super.viewDidLoad()
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
@@ -38,6 +39,7 @@ class CarListViewController: UIViewController, PropertyEditDelegate {
     
     //Refresh carList from database
     func refreshCarList() {
+        
         if let array = coreDataManager.loadCars() {
             carList = array
         }

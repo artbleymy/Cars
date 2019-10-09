@@ -7,6 +7,7 @@
     <entity name="Property" representedClassName="Property" syncable="YES" codeGenerationType="class">
         <attribute name="descr" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nullable" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <relationship name="value" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Value" inverseName="parentProperty" inverseEntity="Value"/>
@@ -18,7 +19,7 @@
     </entity>
     <elements>
         <element name="Car" positionX="-55.27734375" positionY="-6.2265625" width="128" height="73"/>
-        <element name="Property" positionX="380.390625" positionY="-33.5390625" width="128" height="118"/>
+        <element name="Property" positionX="380.390625" positionY="-33.5390625" width="128" height="133"/>
         <element name="Value" positionX="176.15234375" positionY="-5.5546875" width="128" height="88"/>
     </elements>
 </model>

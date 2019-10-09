@@ -43,7 +43,7 @@ class CoreDataManager {
     //Load cars from database and return array of Car
     func loadCars(with request: NSFetchRequest<Car> = Car.fetchRequest()) -> [Car]? {
         var carList: [Car]?
-        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare))]
         do {
             carList = try context.fetch(request)
         } catch {
@@ -69,15 +69,12 @@ class CoreDataManager {
     func loadValues(for car: Car) -> [Value]? {
         var valuesList: [Value]?
         let request : NSFetchRequest<Value> = Value.fetchRequest()
-        if let carName = car.name {
-//            let carPredicate = NSPredicate(format: "parentCar.name MATCHES %@", carName)
-            let carPredicate = NSPredicate(format: "parentCar == %@", car)
-            request.predicate = carPredicate
-            do {
-                valuesList = try context.fetch(request)
-            } catch {
-                print("Error while loading \(error)")
-            }
+        let carPredicate = NSPredicate(format: "parentCar == %@", car)
+        request.predicate = carPredicate
+        do {
+            valuesList = try context.fetch(request)
+        } catch {
+            print("Error while loading \(error)")
         }
         return valuesList
         
@@ -130,13 +127,14 @@ class CoreDataManager {
         return carArray
     }
     
-    private func appendToPropertyList(source array: [Property], name: String, descr: String, rating: Int, type: String) -> [Property]{
+    private func appendToPropertyList(source array: [Property], name: String, descr: String, rating: Int, type: String, nullable: Bool) -> [Property]{
         var propertyArray = array
         let property = Property(context: context)
         property.name = name
         property.descr = descr
         property.rating = Int16(rating)
         property.type = type
+        property.nullable = nullable
         propertyArray.append(property)
         return propertyArray
     }
@@ -162,25 +160,29 @@ class CoreDataManager {
                                               name: "Make",
                                               descr: "Производитель",
                                               rating: 1,
-                                              type: "String")
+                                              type: "String",
+                                              nullable: false)
         
         propertiesList = appendToPropertyList(source: propertiesList,
                                               name: "Model",
                                               descr: "Модель",
                                               rating: 2,
-                                              type: "String")
+                                              type: "String",
+                                              nullable: false)
         
         propertiesList = appendToPropertyList(source: propertiesList,
                                               name: "Type",
                                               descr: "Тип кузова",
                                               rating: 3,
-                                              type: "String")
+                                              type: "String",
+                                              nullable: true)
         
         propertiesList = appendToPropertyList(source: propertiesList,
                                               name: "Year",
                                               descr: "Год выпуска",
                                               rating: 4,
-                                              type: "Int")
+                                              type: "Year",
+                                              nullable: true)
         
         var carList = [Car]()
         carList = appendToCarList(source: carList, name: "BMW X5 2005 г.в.")

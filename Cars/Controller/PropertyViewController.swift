@@ -14,7 +14,7 @@ protocol PropertyEditDelegate {
 
 class PropertyViewController: UIViewController {
 
-    //MARK: - Vars
+    //MARK: - Properties
     let coreDataManager = CoreDataManager.instance
     var delegate: PropertyEditDelegate?
     var selectedCar: Car? {
@@ -22,6 +22,7 @@ class PropertyViewController: UIViewController {
             loadValuesOfSelectedCar()
         }
     }
+    var possibleYearsList = [String]()
     var propertiesList = [Property]()
     var valuesList = [Value]()
     //Generate name for new car
@@ -54,7 +55,7 @@ class PropertyViewController: UIViewController {
     //IBActions
     @IBAction func savePressed(_ sender: UIBarButtonItem) {
         
-        saveCurrentProperties()
+        saveProperties()
     }
     
     
@@ -74,9 +75,10 @@ class PropertyViewController: UIViewController {
         if let propertyArray = coreDataManager.loadProperties() {
             propertiesList = propertyArray
         }
+        setPossibleYears()
 
     }
-    
+    //MARK: - Edit properties support
     //Return current value of property for selected car
     private func getValueForProperty(property: Property) -> String?{
         let filteredValues = valuesList.filter{ $0.parentProperty == property }
@@ -92,8 +94,12 @@ class PropertyViewController: UIViewController {
         }
         
     }
+    
     //Save properies for current car, if new car - create car before saving
-    private func saveCurrentProperties() {
+    private func saveProperties() {
+        
+        guard validation() else { return }
+        
         var valuesListForSave = [Value]()
         var car: Car
         let newName = newCarName
@@ -120,7 +126,34 @@ class PropertyViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
         delegate?.refreshCarList()
     }
-
+    
+    //Validate values
+    //return true if ok, false - if fields not valid
+    private func validation() -> Bool {
+        for index in 0..<propertiesList.count {
+            //Check not nullable fields
+            if !propertiesList[index].nullable {
+                guard let cell = propertyTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? PropertyCell else { return false}
+                if let value = cell.propertyValueField.text, value.isEmpty {
+                    //print("Не заполнено обязательное поле \(propertiesList[index].descr)")
+                    cell.propertyValueField.markFieldAsInvalid()
+                    return false
+                }
+            }
+            
+        }
+        
+        return true
+    }
+   //Make array of possible years
+    private func setPossibleYears(){
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: Date())
+        for year in (currentYear-100...currentYear).reversed() {
+            possibleYearsList.append(String(year))
+        }
+    }
+    
 }
 //MARK: - Table View delegate and data source methods
 extension PropertyViewController: UITableViewDelegate, UITableViewDataSource{
@@ -136,11 +169,14 @@ extension PropertyViewController: UITableViewDelegate, UITableViewDataSource{
             let property = propertiesList[indexPath.row]
             propertyCell.propertyNameLabel.text = property.descr
             propertyCell.propertyValueField.placeholder = property.descr
-            //different keyboards for different type of properties
-            propertyCell.propertyValueField.keyboardType = (property.type == "Int") ? .decimalPad : .default
+            
             //set value of property for cell
             if let value = getValueForProperty(property: property) {
                 propertyCell.propertyValueField.text = value
+            }
+            //different input methods for different type of properties
+            if property.type == "Year" {
+                propertyCell.setUpPickerForCurrentCell(with: possibleYearsList)
             }
             
         }
