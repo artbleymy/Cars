@@ -4,8 +4,6 @@
 //
 //  Created by Stanislav on 07/10/2019.
 //  Copyright © 2019 Stanislav Kozlov. All rights reserved.
-//
-// swiftlint:disable prohibited_interface_builder
 
 import UIKit
 
@@ -27,27 +25,45 @@ final class PropertyViewController: UIViewController
 	var possibleYearsList = [String]()
 	var propertiesList = [Property]()
 	var valuesList = [Value]()
-	//IBOutlets
-	@IBOutlet weak var propertyTableView: UITableView!
-	//IBActions
-	@IBAction func savePressed(_ sender: UIBarButtonItem) {
-		saveProperties()
-	}
+	var propertyTableView = UITableView()
+
 	// MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		propertyTableView.delegate = self
-		propertyTableView.dataSource = self
-		propertyTableView.tableFooterView = UIView()
-		propertyTableView.separatorStyle = .none
-		//tap anywhere to hide keyboard
-		let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
-		view.addGestureRecognizer(tap)
+		setupPropertyTableView()
 		//load properties from database
 		if let propertyArray = coreDataManager.loadProperties() {
 			propertiesList = propertyArray
 		}
 		setPossibleYears()
+	}
+	private func setupPropertyTableView() {
+		propertyTableView = UITableView(frame: self.view.bounds)
+		propertyTableView.register(PropertyCell.self, forCellReuseIdentifier: "propertyCell")
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
+																 style: .plain,
+																 target: self,
+																 action: #selector(savePressed))
+		propertyTableView.delegate = self
+		propertyTableView.dataSource = self
+		propertyTableView.tableFooterView = UIView()
+		propertyTableView.separatorStyle = .none
+		propertyTableView.rowHeight = UITableView.automaticDimension
+		propertyTableView.estimatedRowHeight = 44
+		propertyTableView.backgroundColor = .red
+		self.view.addSubview(propertyTableView)
+//		let margins = self.view.layoutMarginsGuide
+//		propertyTableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+//		propertyTableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+//		propertyTableView.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+//		propertyTableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
+
+		//tap anywhere to hide keyboard
+		let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+		view.addGestureRecognizer(tap)
+	}
+	@objc private func savePressed(_ sender: UIBarButtonItem) {
+		saveProperties()
 	}
 	// MARK: - Edit properties support
 	private func generateNewNameCar() -> String {

@@ -5,7 +5,6 @@
 //  Created by Stanislav on 07/10/2019.
 //  Copyright © 2019 Stanislav Kozlov. All rights reserved.
 //
-// swiftlint:disable prohibited_interface_builder
 
 import UIKit
 
@@ -13,15 +12,24 @@ final class PropertyCell: UITableViewCell
 {
 	let picker = UIPickerView()
 	var pickerValues = [String]()
-
-	@IBOutlet weak var propertyNameLabel: UILabel!
-	@IBOutlet weak var propertyValueField: UITextField!
+	var propertyNameLabel = UILabel()
+	var propertyValueField = UITextField()
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		propertyValueField.delegate = self
+	}
+
+	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		setupLabel()
+		setupValueField()
+
 		picker.delegate = self
 		picker.dataSource = self
+	}
+
+	@available(*, unavailable) required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
 	}
 
 	override func setSelected(_ selected: Bool, animated: Bool) {
@@ -37,6 +45,30 @@ final class PropertyCell: UITableViewCell
 			guard let index = pickerValues.firstIndex(of: text) else { return }
 			picker.selectRow(index, inComponent: 0, animated: true)
 		}
+	}
+	private func setupLabel() {
+		propertyNameLabel.font = UIFont.systemFont(ofSize: 10)
+		propertyNameLabel.text = "Test label"
+		propertyNameLabel.translatesAutoresizingMaskIntoConstraints = false
+		self.addSubview(propertyNameLabel)
+		let margins = self.layoutMarginsGuide
+		propertyNameLabel.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+		propertyNameLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+		propertyNameLabel.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+		propertyNameLabel.heightAnchor.constraint(equalToConstant: 12).isActive = true
+	}
+	private func setupValueField() {
+		propertyValueField.font = UIFont.systemFont(ofSize: 14)
+		propertyValueField.borderStyle = UITextField.BorderStyle.roundedRect
+		propertyValueField.clearButtonMode = UITextField.ViewMode.whileEditing
+		propertyValueField.translatesAutoresizingMaskIntoConstraints = false
+		self.addSubview(propertyValueField)
+		propertyValueField.delegate = self
+		let margins = self.layoutMarginsGuide
+		propertyValueField.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+		propertyValueField.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+		propertyValueField.heightAnchor.constraint(equalToConstant: 34).isActive = true
+		propertyValueField.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
 	}
 }
 // MARK: - Text field delegate methods
